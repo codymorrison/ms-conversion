@@ -107,7 +107,7 @@ function short(ms) {
 function long(ms) {
   return plural(ms, d, 'day')
     || plural(ms, h, 'hour')
-    || plural(ms, m, 'minute')
+    || plural(ms, m, 'min')
     || plural(ms, s, 'second')
     || ms + ' ms';
 }
@@ -118,6 +118,6 @@ function long(ms) {
 
 function plural(ms, n, name) {
   if (ms < n) return;
-  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
+  if ((ms < n * 1.5) || name === 'min') return Math.floor(ms / n) + ' ' + name;
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
