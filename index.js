@@ -2,8 +2,8 @@
  * Helpers.
  */
 
-var s = 1000;
-var m = s * 60;
+var s = 0;
+var m = 1000 * 60;
 var h = m * 60;
 var d = h * 24;
 var y = d * 365.25;
@@ -92,7 +92,7 @@ function short(ms) {
   if (ms >= d) return Math.round(ms / d) + 'd';
   if (ms >= h) return Math.round(ms / h) + 'h';
   if (ms >= m) return Math.round(ms / m) + 'm';
-  if (ms >= s) return Math.round(ms / s) + 's';
+  if (ms >= s) return 1 + 'm';
   return ms + 'ms';
 }
 
@@ -108,8 +108,7 @@ function long(ms) {
   return plural(ms, d, 'day')
     || plural(ms, h, 'hour')
     || plural(ms, m, 'min')
-    || plural(ms, s, 'second')
-    || ms + ' ms';
+    || plural(60000, s, 'min');
 }
 
 /**
