@@ -89,7 +89,7 @@ function parse(str) {
  */
 
 function short(ms) {
-  if (ms >= d) return Math.round(ms / d) + 'd';
+  //if (ms >= d) return Math.round(ms / d) + 'd';
   if (ms >= h) return Math.round(ms / h) + 'h';
   if (ms >= m) return Math.round(ms / m) + 'm';
   if (ms >= s) return '1m';
@@ -105,8 +105,7 @@ function short(ms) {
  */
 
 function long(ms) {
-  return plural(ms, d, 'day')
-    || plural(ms, h, 'hour')
+  return plural(ms, h, 'hour')
     || plural(ms, m, 'min')
     || '1 min';
 }
