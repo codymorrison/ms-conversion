@@ -16,5 +16,8 @@
     "scripts": {
       "ms/index.js": "index.js"
     }
+  },
+  "scripts": {
+    "test": "mocha test/test.js"
   }
 }
