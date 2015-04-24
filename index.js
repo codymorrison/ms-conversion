@@ -145,6 +145,7 @@ function long(ms) {
  */
 
 function plural(ms, n, name) {
+  // If the time doesn't add up to the specific time variant return
   if (ms < n) return;
 
   if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
