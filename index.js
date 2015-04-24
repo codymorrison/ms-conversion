@@ -21,12 +21,10 @@ var y = d * 365.25;
  * @api public
  */
 
-module.exports = function(val, options){
+module.exports = function(val, options) {
   options = options || {};
   if ('string' == typeof val) return parse(val);
-  return options.long
-    ? long(val)
-    : short(val);
+  return options.long ? long(val) : short(val);
 };
 
 /**
@@ -38,10 +36,16 @@ module.exports = function(val, options){
  */
 
 function parse(str) {
+  str = '' + str;
+  if (str.length > 10000) return;
+
   var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
+
   if (!match) return;
+
   var n = parseFloat(match[1]);
   var type = (match[2] || 'ms').toLowerCase();
+
   switch (type) {
     case 'years':
     case 'year':
@@ -89,11 +93,11 @@ function parse(str) {
  */
 
 function short(ms) {
-  //if (ms >= d) return Math.round(ms / d) + 'd';
+  if (ms >= d) return Math.round(ms / d) + 'd';
   if (ms >= h) return Math.round(ms / h) + 'h';
   if (ms >= m) return Math.round(ms / m) + 'm';
-  if (ms >= s) return '1m';
-  return '1m';
+  if (ms >= s) return Math.round(ms / s) + 's';
+  return ms + 'ms';
 }
 
 /**
@@ -105,9 +109,7 @@ function short(ms) {
  */
 
 function long(ms) {
-  return plural(ms, h, 'hour')
-    || plural(ms, m, 'min')
-    || '1 min';
+  return plural(ms, d, 'day') || plural(ms, h, 'hour') || plural(ms, m, 'minute') || plural(ms, s, 'second') || ms + ' ms';
 }
 
 /**
@@ -116,6 +118,6 @@ function long(ms) {
 
 function plural(ms, n, name) {
   if (ms < n) return;
-  if ((ms < n * 1.5) || name === 'min') return Math.floor(ms / n) + ' ' + name;
+  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
