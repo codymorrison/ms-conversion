@@ -135,7 +135,7 @@ describe('ms(number, { long: true })', function(){
     expect(ms(24 * 60 * 60 * 10000, { long: true })).to.be('10 days');
   });
 
-  it('should fallback to minutes if days is disabled', function(){
+  it('should fallback to hours if days is disabled', function(){
     expect(ms(24 * 60 * 60 * 1000, { long: true, days: false })).to.be('24 hours');
     expect(ms(24 * 60 * 60 * 1200, { long: true, days: false })).to.be('29 hours');
     expect(ms(24 * 60 * 60 * 10000, { long: true, days: false })).to.be('240 hours');

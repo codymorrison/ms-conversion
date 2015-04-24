@@ -7,6 +7,9 @@
     "url": "git://github.com/codymorrison/ms.js.git"
   },
   "main": "./index",
+  "dependencies": {
+    "parse-ms": "~1.0.0"
+  },
   "devDependencies": {
     "coveralls": "~2.11.2",
     "expect.js": "~0.3.1",
