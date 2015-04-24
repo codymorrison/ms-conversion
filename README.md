@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/codymorrison/ms.js.svg?branch=master)](https://travis-ci.org/codymorrison/ms.js) [![Coverage Status](https://coveralls.io/repos/codymorrison/ms-conversion/badge.svg)](https://coveralls.io/r/codymorrison/ms-conversion)
+[![Build Status](https://travis-ci.org/codymorrison/ms-conversion.svg?branch=master)](https://travis-ci.org/codymorrison/ms-conversion) [![Coverage Status](https://coveralls.io/repos/codymorrison/ms-conversion/badge.svg)](https://coveralls.io/r/codymorrison/ms-conversion)
 
 # ms-conversion
 
