@@ -28,8 +28,6 @@ var minutes = true;
 module.exports = function(val, opts) {
   opts = opts || {};
 
-  console.log('this: ', this);
-
   // Handle parsing a time
   if (typeof val === 'string') return parse(val);
 
