@@ -1,7 +1,7 @@
 {
-  "name": "ms",
-  "version": "0.7.1",
-  "description": "Tiny ms conversion utility",
+  "name": "ms-conversion",
+  "version": "1.0.0",
+  "description": "Millisecond conversion utility",
   "repository": {
     "type": "git",
     "url": "git://github.com/codymorrison/ms.js.git"

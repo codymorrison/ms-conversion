@@ -1,7 +1,7 @@
 {
   "name": "ms",
-  "repo": "guille/ms.js",
-  "version": "0.6.1",
+  "repo": "codymorrison/ms.js",
+  "version": "1.0.0",
   "description": "ms parsing / formatting",
   "keywords": [
     "ms",
