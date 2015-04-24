@@ -8,6 +8,10 @@ var h = m * 60;
 var d = h * 24;
 var y = d * 365.25;
 
+var days = true;
+var hours = true;
+var minutes = true;
+
 /**
  * Parse or format the given `val`.
  *
@@ -23,6 +27,11 @@ var y = d * 365.25;
 
 module.exports = function(val, options) {
   options = options || {};
+
+  typeof options.days === 'boolean' ? days = options.days : days = true;
+  typeof options.hours === 'boolean' ? hours = options.hours : hours = true;
+  typeof options.minutes === 'boolean' ? minutes = options.minutes : minutes = true;
+
   if ('string' == typeof val) return parse(val);
   return options.long ? long(val) : short(val);
 };
@@ -38,7 +47,7 @@ module.exports = function(val, options) {
 function parse(str) {
   str = '' + str;
   if (str.length > 10000) return;
-  
+
   var match = /^((?:\d+)?\.?\d+) *(milliseconds?|msecs?|ms|seconds?|secs?|s|minutes?|mins?|m|hours?|hrs?|h|days?|d|years?|yrs?|y)?$/i.exec(str);
 
   if (!match) return;
@@ -93,9 +102,9 @@ function parse(str) {
  */
 
 function short(ms) {
-  if (ms >= d) return Math.round(ms / d) + 'd';
-  if (ms >= h) return Math.round(ms / h) + 'h';
-  if (ms >= m) return Math.round(ms / m) + 'm';
+  if (ms >= d && days) return Math.round(ms / d) + 'd';
+  if (ms >= h && hours) return Math.round(ms / h) + 'h';
+  if (ms >= m && minutes) return Math.round(ms / m) + 'm';
   if (ms >= s) return Math.round(ms / s) + 's';
   return ms + 'ms';
 }
@@ -109,7 +118,23 @@ function short(ms) {
  */
 
 function long(ms) {
-  return plural(ms, d, 'day') || plural(ms, h, 'hour') || plural(ms, m, 'minute') || plural(ms, s, 'second') || ms + ' ms';
+  if (days && plural(ms, d, 'day')) {
+    return plural(ms, d, 'day');
+  }
+
+  if (hours && plural(ms, h, 'hour')) {
+    return plural(ms, h, 'hour');
+  }
+
+  if (minutes && plural(ms, m, 'minute')) {
+    return plural(ms, m, 'minute');
+  }
+
+  if (plural(ms, s, 'second')) {
+    return plural(ms, s, 'second');
+  }
+
+  return ms + ' ms';
 }
 
 /**
@@ -118,6 +143,7 @@ function long(ms) {
 
 function plural(ms, n, name) {
   if (ms < n) return;
+
   if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
   return Math.ceil(ms / n) + ' ' + name + 's';
 }
