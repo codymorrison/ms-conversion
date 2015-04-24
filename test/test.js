@@ -10,29 +10,33 @@ if ('undefined' != typeof require) {
 
 // strings
 
-describe('ms(string)', function(){
-  it('should preserve ms', function () {
-    expect(ms('100')).to.be(100);
-  });
-
-  it('should convert from m to ms', function () {
-    expect(ms('1m')).to.be(60000);
-  });
-
-  it('should convert from h to ms', function () {
-    expect(ms('1h')).to.be(3600000);
+describe('ms(string)', function() {
+  it('should convert y to ms', function () {
+    expect(ms('1y')).to.be(31557600000);
   });
 
   it('should convert d to ms', function () {
     expect(ms('2d')).to.be(172800000);
   });
 
+  it('should convert h to ms', function () {
+    expect(ms('1h')).to.be(3600000);
+  });
+
   it('should convert s to ms', function () {
     expect(ms('1s')).to.be(1000);
   });
 
+  it('should convert m to ms', function () {
+    expect(ms('1m')).to.be(60000);
+  });
+
   it('should convert ms to ms', function () {
     expect(ms('100ms')).to.be(100);
+  });
+
+  it('should preserve ms', function () {
+    expect(ms('100')).to.be(100);
   });
 
   it('should work with decimals', function () {

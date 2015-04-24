@@ -3,3 +3,4 @@ test
 History.md
 Makefile
 component.json
+.coveralls.yml
