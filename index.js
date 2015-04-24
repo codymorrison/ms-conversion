@@ -25,15 +25,20 @@ var minutes = true;
  * @api public
  */
 
-module.exports = function(val, options) {
-  options = options || {};
+module.exports = function(val, opts) {
+  opts = opts || {};
 
-  typeof options.days === 'boolean' ? days = options.days : days = true;
-  typeof options.hours === 'boolean' ? hours = options.hours : hours = true;
-  typeof options.minutes === 'boolean' ? minutes = options.minutes : minutes = true;
+  console.log('this: ', this);
 
-  if ('string' == typeof val) return parse(val);
-  return options.long ? long(val) : short(val);
+  // Handle parsing a time
+  if (typeof val === 'string') return parse(val);
+
+  // Set options
+  typeof opts.days === 'boolean' ? days = opts.days : days = true;
+  typeof opts.hours === 'boolean' ? hours = opts.hours : hours = true;
+  typeof opts.minutes === 'boolean' ? minutes = opts.minutes : minutes = true;
+
+  return opts.long ? long(val) : short(val);
 };
 
 /**
