@@ -1,53 +1,83 @@
 [![Build Status](https://travis-ci.org/codymorrison/ms-conversion.svg?branch=master)](https://travis-ci.org/codymorrison/ms-conversion) [![Coverage Status](https://coveralls.io/repos/codymorrison/ms-conversion/badge.svg)](https://coveralls.io/r/codymorrison/ms-conversion)
 
-# ms-conversion
 
-Based on the exellent library [ms.js](https://github.com/rauchg/ms.js). This library handles parsing and converting times to and from milliseconds. This library includes a few updates to customize your output.
+# ms-time
+
+Takes any millisecond output and allows you to output in a number of formats based on the length of time. Supports years, months, weeks, days, minutes, seconds and milliseconds.
+
+## Installation
+
+**NPM:**
+
+```npm i ms-time --save```
+
+## Usage
+
+```js
+var msTime = require('ms-time');
+
+msTime(1337000000);
+//=> '2w'
+
+msTime(1337000000, { long: true );
+//=> '2 weeks'
+
+msTime(1337000000, { weeks: false );
+//=> '15.5d'
+
+msTime(1337000000, { long: true, weeks: false );
+//=> '15.5 days'
+```
 
 ## Options
 
-```
-{
-  long: true, // Changes time format to full words
-  days: false, // If the time is in days it will fallback to hours (1 day becomes 24 hours)
-  hours: false, // If the time is in hours, it will fallback to minutes (1 hour becomes 1440 minutes)
-  minutes: false // If the time is in minutes, it will fallback to seconds (1 minute becomes 60 seconds)
-}
-```
+### Long
 
-## Examples
+Type: ```Boolean```<br>
+Default: ```false```
+
+Outputs in short or long format (i.e. **d** or **days**)
+
+### Years
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+If the time is greater than 1 year, output in years. If false, fall back to months or next available option.
+
+### Months
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+If the time is greater than 1 month, output in months. If false, fall back to weeks or next available option.
+
+### Weeks
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+If the time is greater than 1 week, output in weeks. If false, fall back to days or next available option.
+
+### Days
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+If the time is greater than 1 day, output in days. If false, fall back to hours.
+
+## Contributing
+
+1. Fork it!
+2. Create your feature branch: `git checkout -b my-new-feature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin my-new-feature`
+5. Submit a pull request :D
 
 
-```js
-ms('2 days')  // 172800000
-ms('1d')      // 86400000
-ms('10h')     // 36000000
-ms('2.5 hrs') // 9000000
-ms('2h')      // 7200000
-ms('1m')      // 60000
-ms('5s')      // 5000
-ms('100')     // 100
-```
+## Credits
 
-```js
-ms(60000)             // "1m"
-ms(2 * 60000)         // "2m"
-ms(ms('10 hours'))    // "10h"
-```
-
-```js
-ms(60000, { long: true })					// "1 minute"
-ms(60000, { long: true, minutes: false })	// "60 seconds"
-ms(2 * 60000, { long: true })				// "2 minutes"
-ms(ms('10 hours'), { long: true })			// "10 hours"
-```
-
-- Node/Browser compatible. Published as [`ms-conversion`](https://www.npmjs.org/package/ms-conversion) in [NPM](http://nodejs.org/download).
-- If a number is supplied to `ms`, a string with a unit is returned.
-- If a string that contains the number is supplied, it returns it as
-a number (e.g: it returns `100` for `'100'`).
-- If you pass a string with a number and a valid unit, the number of
-equivalent ms is returned.
+Originally based on the exellent library [ms.js](https://github.com/rauchg/ms.js). Also relies on [ms-parse](https://github.com/sindresorhus/pretty-ms).
 
 ## License
 

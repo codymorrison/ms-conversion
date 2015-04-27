@@ -1,22 +1,22 @@
 var parseMs = require('parse-ms');
 
 /**
- * MS Time Helpers.
- */
-var s = 1000;
-var m = s * 60;
-var h = m * 60;
-var d = h * 24;
-var y = d * 365.25;
-
-/**
  * Config
  */
 var config = {
   long: false,
   days: true,
-  hours: true,
-  minutes: true
+  weeks: true,
+  months: true,
+  years: true,
+  yearFormat: ['yr', 'year'],
+  monthFormat: ['mo', 'month'],
+  weekFormat: ['w', 'week'],
+  hourFormat: ['h', 'hour'],
+  dayFormat: ['d', 'day'],
+  minuteFormat: ['m', 'minute'],
+  secondFormat: ['s', 'second'],
+  millisecondFormat: ['ms', 'millisecond']
 };
 
 /**
@@ -35,116 +35,215 @@ var config = {
 module.exports = function(val, opts) {
   opts = opts || {};
 
-  // Set options
-  config.days = typeof opts.days === 'boolean' ? opts.days : true;
-  config.hours = typeof opts.hours === 'boolean' ? opts.hours : true;
-  config.minutes = typeof opts.minutes === 'boolean' ? opts.minutes : true;
-
   config.long = opts.long ? true : false;
+  config.years = opts.years === false ? false : true;
+  config.months = opts.months === false ? false : true;
+  config.weeks = opts.weeks === false ? false : true;
+  config.days = opts.days === false ? false : true;
 
-  return config.long ? long(val) : short(val);
+  return formatMs(val);
 };
 
 /**
- * Short format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function short(ms) {
-  if (ms >= d && config.days) return Math.round(ms / d) + 'd';
-  if (ms >= h && config.hours) return Math.round(ms / h) + 'h';
-  if (ms >= m && config.minutes) return Math.round(ms / m) + 'm';
-  if (ms >= s) return Math.round(ms / s) + 's';
-  return ms + 'ms';
-}
-
-/**
- * Long format for `ms`.
- *
- * @param {Number} ms
- * @return {String}
- * @api private
- */
-
-function long(ms) {
-  if (config.days && plural(ms, d, 'day')) {
-    return plural(ms, d, 'day');
-  }
-
-  if (config.hours && plural(ms, h, 'hour')) {
-    return plural(ms, h, 'hour');
-  }
-
-  if (config.minutes && plural(ms, m, 'minute')) {
-    return plural(ms, m, 'minute');
-  }
-
-  if (plural(ms, s, 'second')) {
-    return plural(ms, s, 'second');
-  }
-
-  return ms + ' ms';
-}
-
-/**
- * Pluralization helper.
+ * Format helper.
  *
  * @param {Number} ms The time to convert in ms
- * @param {Number} n The time to check against in ms (year, day, hour, etc)
- * @param {String} name The name to use for the type in singular form (day, minute)
  * @return {String}
  * @api private
  */
-function plural(ms, n, name) {
-  // If the time doesn't add up to the specific time variant return
-  if (ms < n) return;
+function formatMs(ms) {
+  var msParsed = parseMs(ms);
 
-  // If there is less than 1.5 of the time type keep the singular form and
-  // round down
-  if (ms < n * 1.5) return Math.floor(ms / n) + ' ' + name;
+  msParsed = addParseMsData(msParsed);
 
-  // Provide high estimate and return plural version
-  return round(ms, n) + ' ' + name + 's';
+  // If days are available, add parsing for years/months/weeks
+  if (msParsed.years > 0 && config.years) return addFormat(msParsed.years, config.yearFormat);
+
+  if (msParsed.months > 0 && config.months) return addFormat(msParsed.months, config.monthFormat);
+
+  if (msParsed.weeks > 0 && config.weeks) return addFormat(msParsed.weeks, config.weekFormat);
+
+  if (msParsed.days > 0 && config.days) return addFormat(msParsed.days, config.dayFormat);
+
+  if (msParsed.hours > 0) return addFormat(msParsed.hours, config.hourFormat);
+
+  if (msParsed.minutes > 0) return addFormat(msParsed.minutes, config.minuteFormat);
+
+  if (msParsed.seconds > 0) return addFormat(msParsed.seconds, config.secondFormat);
+
+  if (msParsed.milliseconds > 0) return addFormat(msParsed.milliseconds, config.millisecondFormat);
+
+  return 0;
 }
 
+
 /**
- * Rounding helper.
+ * Add Format
  *
- * @param {Number} ms The time to convert in ms
- * @param {String} n The time to check against in ms (year, day, hour, etc)
+ * @param {Float} time The finalized time
+ * @param {Array} format The format to use for short/long
  * @return {String}
  * @api private
  */
-function round(ms, n) {
-  var msParsed;
+function addFormat(time, format) {
+  var usePlural = '';
+  var formatType = config.long ? 1 : 0;
+  var space = config.long ? ' ' : '';
 
-  msParsed = parseMs(ms);
+  if (time > 1 && config.long) usePlural = 's';
 
-  // TODO: Expand this to other types beyond hours
-  if (n === h) {
-    // Add any days to hours
-    if (msParsed.days > 0) {
-      msParsed.hours = msParsed.hours + (msParsed.days * 24);
-    }
+  return time + space + format[formatType] + usePlural;
+}
 
-    // Round up to nearest hour after 45 minutes
-    if (msParsed.minutes > 45) {
-      return msParsed.hours + 1;
-    }
 
-    // Round to .5 between 15 and 45 minutes
-    if (msParsed.minutes <= 45 && msParsed.minutes >= 15) {
-      return msParsed.hours+'.5';
-    }
+/**
+ * Round helper
+ *
+ * Takes a value and divides it by a number returning the
+ * value in .5 increments.
+ *
+ * @param {Number} dividend The time to divide from
+ * @param {Number} divisor The number to divide by
+ * @param {Number} +/-
+ * @return {Float} The rounded dividend (0, 0.5, 1) from current number
+ * @api private
+ */
+function roundHelper(dividend, divisor, scale) {
+  scale = scale || 0.1;
 
-    // Round down otherwise
-    if (msParsed.minutes < 15) {
-      return msParsed.hours;
-    }
+  // The Number of times the dividend goes into the divisor
+  var integer = Math.floor(dividend / divisor);
+
+  // This gets the decimal point and collects the first 2 numbers (0.0 - 1.0)
+  var fraction = (dividend / divisor) % 1;
+
+  // If fraction is greater than scale return ceiling of integer
+  if (fraction >= (0.5 + scale)) {
+    return integer++;
   }
 
-  return Math.ceil(ms / n);
+  // If fraction is less than scale return floor of integer
+  if (fraction <= (0.5 - scale)) {
+    return integer;
+  }
+
+  // Otherwise we're within scale and can apply 0.5
+  return integer + 0.5;
+}
+
+
+/**
+ * Round Days
+ *
+ * Round days using hours and day data
+ *
+ * @param {Number} days The number of days
+ * @param {Number} hours The number of hours
+ * @param {Number} scale
+ * @return {Float} The day amount in 0.5 increments based on scale
+ * @api private
+ */
+function roundDays(days, hours, scale) {
+  scale = scale || 6;
+  var median = 12;
+
+  if (hours >= (median + scale)) {
+    return days++;
+  }
+
+  if (hours <= (median - scale)) {
+    return days;
+  }
+
+  return days + 0.5;
+}
+
+
+/**
+ * Round Hours
+ *
+ * Round hours using minutes and hour data
+ *
+ * @param {Number} hours The time of hours
+ * @param {Number} minutes The number of minutes
+ * @param {Number} scale
+ * @return {Float} The hour amount in 0.5 increments based on scale
+ * @api private
+ */
+function roundHours(hours, minutes, scale) {
+  scale = scale || 15;
+  var median = 30;
+
+  if (minutes >= (median + scale)) {
+    return hours++;
+  }
+
+  if (minutes <= (median - scale)) {
+    return hours;
+  }
+
+  return hours + 0.5;
+}
+
+
+
+/**
+ * Round Minutes
+ *
+ * Round minutes using minute and seconds data
+ *
+ * @param {Number} minutes The time of seconds
+ * @param {Number} seconds The number of minutes
+ * @param {Number} scale
+ * @return {Float} The minute amount in 0.5 increments based on scale
+ * @api private
+ */
+function roundMinutes(minutes, seconds, scale) {
+  scale = scale || 15;
+  var median = 30;
+
+  if (seconds >= (median + scale)) {
+    return minutes++;
+  }
+
+  if (seconds <= (median - scale)) {
+    return minutes;
+  }
+
+  return minutes + 0.5;
+}
+
+
+
+/**
+ * addParseMsData
+ *
+ * Adds additional values when days are greater than 7
+ *
+ * @param {Object} msData The parse-ms data
+ * @return {Object} The data including years/months/days
+ * @api private
+ */
+function addParseMsData(msData) {
+  var actualHours = (msData.days * 24) + msData.hours;
+  var actualMinutes = (actualHours * 60) + msData.minutes;
+
+  msData.years = 0;
+  msData.months = 0;
+  msData.weeks = 0;
+
+  // Calculate Years
+  if (msData.days >= 365) msData.years = roundHelper(msData.days, 365, null);
+
+  // Calculate Months
+  if (msData.days >= 30) msData.months = roundHelper(msData.days, 30, null);
+
+  // Calculate Weeks
+  if (msData.days >= 7) msData.weeks = roundHelper(msData.days, 7, null);
+
+  if (msData.days > 0) msData.days = roundDays(msData.days, msData.hours, 6);
+  if (msData.hours > 0) msData.hours = roundHours(actualHours, msData.minutes, 15);
+  if (msData.minutes > 0) msData.minutes = roundMinutes(actualMinutes, msData.seconds, 15);
+
+  return msData;
 }
