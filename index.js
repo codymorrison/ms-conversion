@@ -9,6 +9,7 @@ var config = {
   weeks: true,
   months: true,
   years: true,
+  seconds: true,
   milliseconds: true,
   yearFormat: ['yr', 'year'],
   monthFormat: ['mo', 'month'],
@@ -41,7 +42,9 @@ module.exports = function(val, opts) {
   config.months = opts.months === false ? false : true;
   config.weeks = opts.weeks === false ? false : true;
   config.days = opts.days === false ? false : true;
+  config.seconds = opts.seconds === false ? false : true;
   config.milliseconds = opts.milliseconds === false ? false : true;
+  config.minuteFormat = opts.minuteFormat ? opts.minuteFormat : ['m', 'minute'];
 
   return formatMs(val);
 };
@@ -58,27 +61,36 @@ function formatMs(ms) {
 
   msParsed = addParseMsData(msParsed);
 
-  // If days are available, add parsing for years/months/weeks
+  // year format
   if (msParsed.years > 0 && config.years) return addFormat(msParsed.years, config.yearFormat);
 
+  // month format
   if (msParsed.months > 0 && config.months) return addFormat(msParsed.months, config.monthFormat);
 
+  // week format
   if (msParsed.weeks > 0 && config.weeks) return addFormat(msParsed.weeks, config.weekFormat);
 
+  // day format
   if (msParsed.days > 0 && config.days) return addFormat(msParsed.days, config.dayFormat);
 
+  // hour format
   if (msParsed.hours > 0) return addFormat(msParsed.hours, config.hourFormat);
 
+  // minute format
   if (msParsed.minutes > 0) return addFormat(msParsed.minutes, config.minuteFormat);
 
-  if (msParsed.seconds > 0) return addFormat(msParsed.seconds, config.secondFormat);
+  // second format
+  if (msParsed.seconds > 0) {
+    if (!config.seconds) return (addFormat(1, config.minuteFormat));
 
+    return addFormat(msParsed.seconds, config.secondFormat);
+  }
+
+  // ms format
   if (msParsed.milliseconds > 0) {
-    if (config.milliseconds) {
-      return addFormat(msParsed.milliseconds, config.millisecondFormat);
-    } else {
-      return addFormat(1, config.secondFormat);
-    }
+    if (!config.milliseconds) return addFormat(1, config.secondFormat);
+
+    return addFormat(msParsed.milliseconds, config.millisecondFormat);
   }
 
   return 0;
@@ -194,7 +206,6 @@ function roundHours(hours, minutes, scale) {
 }
 
 
-
 /**
  * Round Minutes
  *
@@ -220,7 +231,6 @@ function roundMinutes(minutes, seconds, scale) {
 
   return minutes + 0.5;
 }
-
 
 
 /**

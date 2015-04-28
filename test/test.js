@@ -57,6 +57,14 @@ describe('ms(number, { long: true })', function() {
     expect(ms(24 * 60 * 60 * 1000 * 900, { long: true })).to.be('2.5 years');
   });
 
+  it('should allow you to change the minuteFormat', function() {
+    expect(ms(1000 * 60, { minuteFormat: ['min', 'max'] })).to.be('1min');
+  });
+
+  it('should default to 1 minute if < 1 minute and seconds are disabled', function() {
+    expect(ms(30000, { seconds: false})).to.be('1m');
+  });
+
   it('should default to 1 second if < 1 second and milliseconds are disabled', function() {
     expect(ms(500, { milliseconds: false})).to.be('1s');
   });
@@ -112,8 +120,16 @@ describe('ms(number)', function() {
     expect(ms(24 * 60 * 60 * 1000 * 900, { long: true })).to.be('2.5 years');
   });
 
+  it('should allow you to change the minuteFormat', function() {
+    expect(ms(1000 * 60, { long: true, minuteFormat: ['min', 'max'] })).to.be('1 max');
+  });
+
+  it('should default to 1 minute if < 1 minute and seconds are disabled', function() {
+    expect(ms(30000, { long: true, seconds: false })).to.be('1 minute');
+  });
+
   it('should default to 1 second if < 1 second and milliseconds are disabled', function() {
-    expect(ms(500, { long: true, milliseconds: false})).to.be('1 second');
+    expect(ms(500, { long: true, milliseconds: false })).to.be('1 second');
   });
 
   it('should round', function() {

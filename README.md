@@ -66,12 +66,26 @@ Default: ```true```
 
 If the time is greater than 1 day, output in days. If false, fall back to hours.
 
+### seconds
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+If set to false and time is less than 1 minute, this will output a time of 1 minute.
+
 ### milliseconds
 
 Type: ```Boolean```<br>
 Default: ```true```
 
 If set to false and time is less than 1 second, this will output a time of 1 second.
+
+### minuteFormat
+
+Type: ```Array```<br>
+Default: ```['m', 'minute']```
+
+Customize the output of minutes, first value is the short value, the second is the long. Neither should be plural.
 
 ## Contributing
 
