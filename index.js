@@ -9,6 +9,7 @@ var config = {
   weeks: true,
   months: true,
   years: true,
+  milliseconds: true,
   yearFormat: ['yr', 'year'],
   monthFormat: ['mo', 'month'],
   weekFormat: ['w', 'week'],
@@ -40,6 +41,7 @@ module.exports = function(val, opts) {
   config.months = opts.months === false ? false : true;
   config.weeks = opts.weeks === false ? false : true;
   config.days = opts.days === false ? false : true;
+  config.milliseconds = opts.milliseconds === false ? false : true;
 
   return formatMs(val);
 };
@@ -71,7 +73,13 @@ function formatMs(ms) {
 
   if (msParsed.seconds > 0) return addFormat(msParsed.seconds, config.secondFormat);
 
-  if (msParsed.milliseconds > 0) return addFormat(msParsed.milliseconds, config.millisecondFormat);
+  if (msParsed.milliseconds > 0) {
+    if (config.milliseconds) {
+      return addFormat(msParsed.milliseconds, config.millisecondFormat);
+    } else {
+      return addFormat(1, config.secondFormat);
+    }
+  }
 
   return 0;
 }

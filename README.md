@@ -31,40 +31,47 @@ msTime(1337000000, { long: true, weeks: false );
 
 ## Options
 
-### Long
+### long
 
 Type: ```Boolean```<br>
 Default: ```false```
 
 Outputs in short or long format (i.e. **d** or **days**)
 
-### Years
+### years
 
 Type: ```Boolean```<br>
 Default: ```true```
 
 If the time is greater than 1 year, output in years. If false, fall back to months or next available option.
 
-### Months
+### months
 
 Type: ```Boolean```<br>
 Default: ```true```
 
 If the time is greater than 1 month, output in months. If false, fall back to weeks or next available option.
 
-### Weeks
+### weeks
 
 Type: ```Boolean```<br>
 Default: ```true```
 
 If the time is greater than 1 week, output in weeks. If false, fall back to days or next available option.
 
-### Days
+### days
 
 Type: ```Boolean```<br>
 Default: ```true```
 
 If the time is greater than 1 day, output in days. If false, fall back to hours.
+
+### milliseconds
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+If set to false and time is less than 1 second, this will output a time of 1 second.
 
 ## Contributing
 
