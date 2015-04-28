@@ -36,7 +36,14 @@ msTime(1337000000, { long: true, weeks: false );
 Type: ```Boolean```<br>
 Default: ```false```
 
-Outputs in short or long format (i.e. **d** or **days**)
+Outputs in short or long format (i.e. **d** or **days**).
+
+### pluralize
+
+Type: ```Boolean```<br>
+Default: ```true```
+
+Setting to false does not pluralize the time, useful for custom formats.
 
 ### years
 

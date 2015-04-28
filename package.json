@@ -1,6 +1,6 @@
 {
   "name": "ms-time",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Millisecond conversion utility",
   "author": "Cody Morrison <cody@pixel43.com>",
   "repository": {
