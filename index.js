@@ -5,6 +5,7 @@ var parseMs = require('parse-ms');
  */
 var config = {
   long: false,
+  pluralize: true,
   days: true,
   weeks: true,
   months: true,
@@ -38,6 +39,7 @@ module.exports = function(val, opts) {
   opts = opts || {};
 
   config.long = opts.long ? true : false;
+  config.pluralize = opts.pluralize === false ? false : true;
   config.years = opts.years === false ? false : true;
   config.months = opts.months === false ? false : true;
   config.weeks = opts.weeks === false ? false : true;
@@ -110,7 +112,7 @@ function addFormat(time, format) {
   var formatType = config.long ? 1 : 0;
   var space = config.long ? ' ' : '';
 
-  if (time > 1 && config.long) usePlural = 's';
+  if (time > 1 && config.long && config.pluralize) usePlural = 's';
 
   return time + space + format[formatType] + usePlural;
 }

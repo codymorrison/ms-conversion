@@ -69,6 +69,11 @@ describe('ms(number, { long: true })', function() {
     expect(ms(500, { milliseconds: false})).to.be('1s');
   });
 
+  it('should be able to set pluralization', function() {
+    expect(ms(60 * 1000 * 47.5, { long: true, pluralize: false })).to.be('47.5 minute');
+    expect(ms(60 * 1000 * 47.5, { long: true, pluralize: true })).to.be('47.5 minutes');
+  });
+
   it('should round', function() {
     expect(ms(234234234, { long: true })).to.be('2.5 days');
   });
