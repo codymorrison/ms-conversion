@@ -87,12 +87,61 @@ Default: ```true```
 
 If set to false and time is less than 1 second, this will output a time of 1 second.
 
+### yearFormat
+
+Type: ```Array```<br>
+Default: ```['y', 'year']```
+
+Customize the output of years, first value is the short value, the second is the long. Neither should be plural.
+
+### monthFormat
+
+Type: ```Array```<br>
+Default: ```['mo', 'month']```
+
+Customize the output of months, first value is the short value, the second is the long. Neither should be plural.
+
+### weekFormat
+
+Type: ```Array```<br>
+Default: ```['w', 'week']```
+
+Customize the output of weeks, first value is the short value, the second is the long. Neither should be plural.
+
+### dayFormat
+
+Type: ```Array```<br>
+Default: ```['d', 'day']```
+
+Customize the output of days, first value is the short value, the second is the long. Neither should be plural.
+
+### hourFormat
+
+Type: ```Array```<br>
+Default: ```['h', 'hour']```
+
+Customize the output of hours, first value is the short value, the second is the long. Neither should be plural.
+
 ### minuteFormat
 
 Type: ```Array```<br>
 Default: ```['m', 'minute']```
 
 Customize the output of minutes, first value is the short value, the second is the long. Neither should be plural.
+
+### secondFormat
+
+Type: ```Array```<br>
+Default: ```['s', 'second']```
+
+Customize the output of seconds, first value is the short value, the second is the long. Neither should be plural.
+
+### millisecondFormat
+
+Type: ```Array```<br>
+Default: ```['ms', 'millisecond']```
+
+Customize the output of milliseconds, first value is the short value, the second is the long. Neither should be plural.
 
 ## Contributing
 

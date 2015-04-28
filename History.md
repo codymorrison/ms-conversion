@@ -1,3 +1,14 @@
+0.4.0 / 2015-04-28
+==================
+
+  * Add ```yearFormat``` option
+  * Add ```monthFormat``` option
+  * Add ```weekFormat``` option
+  * Add ```dayFormat``` option
+  * Add ```hourFormat``` option
+  * Add ```secondFormat``` option
+  * Add ```millisecondFormat``` option
+
 0.3.1 / 2015-04-28
 ==================
 
