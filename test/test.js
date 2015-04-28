@@ -57,8 +57,15 @@ describe('ms(number, { long: true })', function() {
     expect(ms(24 * 60 * 60 * 1000 * 900, { long: true })).to.be('2.5 years');
   });
 
-  it('should allow you to change the minuteFormat', function() {
+  it('should allow you to change the format of all types', function() {
+    expect(ms(1000 * 60 * 60 * 24 * 365, { yearFormat: ['min', 'max'] })).to.be('1min');
+    expect(ms(1000 * 60 * 60 * 24 * 30, { monthFormat: ['min', 'max'] })).to.be('1min');
+    expect(ms(1000 * 60 * 60 * 24 * 7, { weekFormat: ['min', 'max'] })).to.be('1min');
+    expect(ms(1000 * 60 * 60 * 24, { dayFormat: ['min', 'max'] })).to.be('1min');
+    expect(ms(1000 * 60 * 60, { hourFormat: ['min', 'max'] })).to.be('1min');
     expect(ms(1000 * 60, { minuteFormat: ['min', 'max'] })).to.be('1min');
+    expect(ms(1000, { secondFormat: ['min', 'max'] })).to.be('1min');
+    expect(ms(1, { millisecondFormat: ['min', 'max'] })).to.be('1min');
   });
 
   it('should default to 1 minute if < 1 minute and seconds are disabled', function() {
@@ -125,8 +132,15 @@ describe('ms(number)', function() {
     expect(ms(24 * 60 * 60 * 1000 * 900, { long: true })).to.be('2.5 years');
   });
 
-  it('should allow you to change the minuteFormat', function() {
+  it('should allow you to change the format of all types', function() {
+    expect(ms(1000 * 60 * 60 * 24 * 365, { long: true, yearFormat: ['min', 'max'] })).to.be('1 max');
+    expect(ms(1000 * 60 * 60 * 24 * 30, { long: true, monthFormat: ['min', 'max'] })).to.be('1 max');
+    expect(ms(1000 * 60 * 60 * 24 * 7, { long: true, weekFormat: ['min', 'max'] })).to.be('1 max');
+    expect(ms(1000 * 60 * 60 * 24, { long: true, dayFormat: ['min', 'max'] })).to.be('1 max');
+    expect(ms(1000 * 60 * 60, { long: true, hourFormat: ['min', 'max'] })).to.be('1 max');
     expect(ms(1000 * 60, { long: true, minuteFormat: ['min', 'max'] })).to.be('1 max');
+    expect(ms(1000, { long: true, secondFormat: ['min', 'max'] })).to.be('1 max');
+    expect(ms(1, { long: true, millisecondFormat: ['min', 'max'] })).to.be('1 max');
   });
 
   it('should default to 1 minute if < 1 minute and seconds are disabled', function() {

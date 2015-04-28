@@ -46,7 +46,14 @@ module.exports = function(val, opts) {
   config.days = opts.days === false ? false : true;
   config.seconds = opts.seconds === false ? false : true;
   config.milliseconds = opts.milliseconds === false ? false : true;
+  config.yearFormat = opts.yearFormat ? opts.yearFormat : ['yr', 'year'];
+  config.monthFormat = opts.monthFormat ? opts.monthFormat : ['mo', 'month'];
+  config.weekFormat = opts.weekFormat ? opts.weekFormat : ['w', 'week'];
+  config.dayFormat = opts.dayFormat ? opts.dayFormat : ['d', 'day'];
+  config.hourFormat = opts.hourFormat ? opts.hourFormat : ['h', 'hour'];
   config.minuteFormat = opts.minuteFormat ? opts.minuteFormat : ['m', 'minute'];
+  config.secondFormat = opts.secondFormat ? opts.secondFormat : ['s', 'second'];
+  config.millisecondFormat = opts.millisecondFormat ? opts.millisecondFormat : ['ms', 'millisecond'];
 
   return formatMs(val);
 };
